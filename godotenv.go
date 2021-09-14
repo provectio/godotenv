@@ -26,7 +26,7 @@ import (
 	"strings"
 )
 
-const doubleQuoteSpecialChars = "\\\n\r\"!$`"
+const doubleQuoteSpecialChars = "\\\n\r!$`"
 
 // Load will read your env file(s) and load them into ENV for this process.
 //
@@ -174,6 +174,7 @@ func Marshal(envMap map[string]string) (string, error) {
 		if d, err := strconv.Atoi(v); err == nil {
 			lines = append(lines, fmt.Sprintf(`%s=%d`, k, d))
 		} else {
+			// lines = append(lines, fmt.Sprintf(`%s=%s`, k, v))
 			lines = append(lines, fmt.Sprintf(`%s=%s`, k, doubleQuoteEscape(v)))
 		}
 	}
@@ -288,7 +289,7 @@ var (
 func parseValue(value string, envMap map[string]string) string {
 
 	// trim
-	value = strings.Trim(value, " ")
+	value = strings.TrimSpace(value)
 
 	// check if we've got quoted values or possible escapes
 	if len(value) > 1 {
